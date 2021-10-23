@@ -2,7 +2,9 @@ package com.coursejava.course.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.coursejava.course.entities.enums.OrderStatus;
@@ -35,6 +38,11 @@ public class Order implements Serializable {
 	@ManyToOne //transformar em chave estrangeira
 	@JoinColumn(name = "client_id") //informando qual o nome da chave estrangeira no banco
 	private User client;
+	
+	@OneToMany(mappedBy = "id.order")
+	private Set<OrderItem> items = new HashSet<>();
+	
+	
 
 	public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
 		super();
@@ -78,6 +86,10 @@ public class Order implements Serializable {
 		this.client = client;
 	}
 
+	public Set<OrderItem> getItems(){
+	return 	items;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
