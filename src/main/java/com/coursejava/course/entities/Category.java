@@ -9,8 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_category")
@@ -22,7 +24,10 @@ public class Category implements Serializable{
 	private Long id;
 	private String name;
 	
-	@Transient //faz com q o jpa nao interprete o comando
+	//faz com que nao ocorra o looping entre os products e category
+	@JsonIgnore 
+	//referencia ao mapeamento feito em product na ManyToMany
+	@ManyToMany(mappedBy = "categories") 
 	private Set<Product> products = new HashSet<>();
 	
 	public Category() {
